@@ -1,29 +1,35 @@
 #include <iostream>
-#include <string>
 using namespace std;
 
-
-class bankAccount {
+class person {
 private:
-	float accountBalance;
 	string personName, personSurname, personPhone;
 public:
-	bankAccount(string name, string surname, float balance = 0, string phone_number = "");
-	bankAccount(const bankAccount& oth);
-	~bankAccount();
+	person(string name, string surname,string phone_number = "");
+	person(const person& oth);
+	~person();
+	void setPersonName(string personName);
+	void setPersonSurname(string personSurname);
+	void setPersonPhone(string personPhone);
 	bool controlNameSurname(string nameOrSurname);
 	bool controlPhoneNumber(string phoneNumber);
-	void displayProfile();
-	void credit(float);
-	void withdraw(float);
-	void sendMoney(bankAccount& othAccount, float amount);
-	void setPersonName(string name);
-	void setPersonSurname(string surname);
-	void setPersonPhone(string phone);
-	void setPersonBalance(float balance = 0);
-	int getPersonBalance() const { return accountBalance; };
-	string getPersonName()const { return personName; };
-	string getPersonSurname() const { return personSurname; };
-	string getPersonPhone() const { return personPhone; };
+	string getPersonName();
+	string getPersonSurname();
+	string getPersonPhone();
+	void print();
 };
 
+class bankAccount :public person {
+private:
+	float accountBalance;
+public:
+	bankAccount(string name, string surname, float balance, string phone_number);
+	//bankAccount(const bankAccount& oth);
+	//~bankAccount();
+	void displayProfile();
+	/*void credit(float);
+	*/void withdraw(float);
+	void sendMoney(bankAccount& othAccount, float amount);
+	void setPersonBalance(int balance);
+	/*int getPersonBalance() const { return accountBalance; }; */
+};
