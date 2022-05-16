@@ -1,62 +1,55 @@
 #include "account.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
 
-bankAccount::bankAccount(string name, string surname, float balance, string phone_number) {
-	setPersonName(name);
-	setPersonSurname(surname);
-	setPersonPhone(phone_number);
-	setPersonBalance(balance);
-	//cout << "Bank Account Created." << endl;
+
+
+// Person Class description
+
+person::person(string personName, string personSurname, string personPhone) {
+	setPersonName(personName);
+	setPersonSurname(personSurname);
+	setPersonPhone(personPhone);
 }
 
-bankAccount::~bankAccount() {
+person::~person() {
 
 }
 
-bankAccount::bankAccount(const bankAccount& othAccount) {
-	personName = othAccount.personName;
-	personSurname = othAccount.personSurname;
-	personPhone = othAccount.personPhone;
-	accountBalance = othAccount.accountBalance;
+person::person(const person& oth) {
+	personName = oth.personName;
+	personSurname = oth.personSurname;
+	personPhone = oth.personPhone;
 }
 
-void bankAccount::setPersonName(string name) {
-	while (!controlNameSurname(name)) {
+void person::setPersonName(string personName) {
+	while (!controlNameSurname(personName)) {
 		cout << "Invalid name, please enter valid name: ";
-		getline(cin, name);
+		getline(cin, personName);
 	}
-	personName = name;
+	this->personName = personName;
 }
 
-void bankAccount::setPersonSurname(string surname) {
-	while(!controlNameSurname(surname)){
+void person::setPersonSurname(string personSurname) {
+	while (!controlNameSurname(personSurname)) {
 		cout << "Invalid surname, please enter valid surname: ";
-		getline(cin, surname);
+		getline(cin, personSurname);
 	}
-	personSurname = surname;
+	this->personSurname = personSurname;
 }
 
-void bankAccount::setPersonPhone(string phone) {
-	while (!controlPhoneNumber(phone)) {
+
+void person::setPersonPhone(string personPhone) {
+	while (!controlPhoneNumber(personPhone)) {
 		cout << "Invalid phone number, please enter valid phone number.";
-		getline(cin, phone);
+		getline(cin, personPhone);
 	}
-	personPhone = phone;
+	this->personPhone = personPhone;
 }
 
-void bankAccount::setPersonBalance(float balance) {
-	if (balance <= 0) {
-		accountBalance = 0;
-	}
-	else {
-		accountBalance = balance;
-	}
-}
-
-
-bool bankAccount::controlNameSurname(string nameOrSurname) {
+bool person::controlNameSurname(string nameOrSurname) {
 	for (unsigned i = 0; i < nameOrSurname.length(); i++) {
 		if (!((nameOrSurname.at(i) >= 'A' && nameOrSurname.at(i) <= 'Z') || (nameOrSurname.at(i) >= 'a' && nameOrSurname.at(i) <= 'z'))) {
 			return false;
@@ -65,8 +58,7 @@ bool bankAccount::controlNameSurname(string nameOrSurname) {
 	return true;
 }
 
-
-bool bankAccount::controlPhoneNumber(string phoneNumber) {
+bool person::controlPhoneNumber(string phoneNumber) {
 	if (phoneNumber.empty()) {
 		return true;
 	}
@@ -82,15 +74,48 @@ bool bankAccount::controlPhoneNumber(string phoneNumber) {
 }
 
 
-void bankAccount::credit(float amount) {
-	while (amount <= 0) {
-		cout << "Invalid amount; please enter valid amount.";
-		cin >> amount;
-	}
-	accountBalance += amount;
-	cout << personName << " " << personSurname << " used " << amount << " $ of credit." << endl;
+string person::getPersonName() {
+	return personName;
 }
 
+string person::getPersonSurname() {
+	return personSurname;
+}
+string person::getPersonPhone() {
+	return personPhone;
+}
+
+void person::print() {
+	cout << "----------Person Details----------" << endl;
+	cout << "Person Details: " << getPersonName() << " " << getPersonSurname() << "\n" << "Phone Number : " << getPersonPhone() << endl;
+	
+}
+
+
+
+
+// bankAccount 
+bankAccount::bankAccount(string name, string surname, float balance, string phone_number) :person(name,surname,phone_number){
+	setPersonBalance(balance);
+	//cout << "Bank account created!" << endl;
+}
+
+void bankAccount::setPersonBalance(int balance) {
+	if (balance <= 0) {
+		accountBalance = 0;
+	}
+	else {
+		accountBalance = balance;
+	}
+}
+
+void bankAccount::displayProfile() {
+	cout << "----------Account Details----------" << endl;
+	cout << "Name: " << person::getPersonName() << " " << person::getPersonName() << "\n" << "Phone: " << person::getPersonPhone() << endl;
+	cout << "Balance: " << accountBalance << " $" << endl;
+	cout << "-----------------------------------" << endl;
+
+}
 
 void bankAccount::withdraw(float amount) {
 	while (amount <= 0 || amount > accountBalance) {
@@ -100,14 +125,6 @@ void bankAccount::withdraw(float amount) {
 	accountBalance -= amount;
 }
 
-void bankAccount::displayProfile() {
-	cout << "----------Account Details----------" << endl;
-	cout << "Name: " << personName <<" " << personSurname << "\n" << "Phone: " << personPhone << endl;
-	cout << "Balance: " << accountBalance << " $" << endl;
-	cout << "-----------------------------------" << endl;
-
-}
-
 void bankAccount::sendMoney(bankAccount& othAccount, float amount) {
 	while (amount <= 0 || amount > accountBalance) {
 		cout << "Invalid amount; please enter valid amount.";
@@ -115,4 +132,5 @@ void bankAccount::sendMoney(bankAccount& othAccount, float amount) {
 	}
 	accountBalance -= amount;
 	othAccount.accountBalance += amount;
+	cout << "Money Transferred ( "<<amount<<" $) from "<<getPersonName() << " to " << othAccount.getPersonName() << "'s account!"<< endl;
 }
