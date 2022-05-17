@@ -1,0 +1,14 @@
+#include "pulse.h"
+#include <iostream>
+using namespace std;
+
+
+
+int main() {
+
+	pulse pulse1("Orhan", "Yildirim", 13, 05, 1986);
+	pulse1.print();
+	
+
+	return 0;
+}
